@@ -1,0 +1,6 @@
+---
+Name: rest_api_oauth
+After:
+  - 'framework/*'
+  - 'cms/*'
+---
