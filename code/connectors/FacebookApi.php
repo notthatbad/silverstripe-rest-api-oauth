@@ -6,10 +6,10 @@
  */
 class FacebookApi extends Object implements ISocialApi {
     /** @var string */
-    private static $app_id = '';
+    private static $app_id = 'foo_id';
 
     /** @var string */
-    private static $app_secret = '';
+    private static $app_secret = 'foo_secret';
 
     /**
      * Checks with the site to confirm that the given token is indeed valid
@@ -22,8 +22,8 @@ class FacebookApi extends Object implements ISocialApi {
      */
     public function validateToken($token, $userID) {
         $fb = new Facebook\Facebook([
-            'app_id' => self::config()->app_id,
-            'app_secret' => self::config()->app_secret,
+            'app_id' => self::$app_id,
+            'app_secret' => self::$app_secret,
             'default_graph_version' => 'v2.2',
         ]);
 
@@ -37,7 +37,6 @@ class FacebookApi extends Object implements ISocialApi {
             SS_Log::log('Facebook SDK returned an error: ' . $e->getMessage(), SS_Log::ERR);
             return false;
         }
-
         $user = $response->getGraphUser();
         return $user->getId() == $userID;
     }

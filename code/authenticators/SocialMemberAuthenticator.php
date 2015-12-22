@@ -50,7 +50,7 @@ class SocialMemberAuthenticator extends MemberAuthenticator {
                 ])->first();
                 if ($identity) {
                     $member = $identity->Member();
-                    $member->registerSuccessfulLogin();
+                    $success = true;
                     return $member;
                 }
                 throw new RestUserException("User not found", 401, 401);
