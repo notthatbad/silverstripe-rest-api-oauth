@@ -6,6 +6,7 @@
  * @date 12.18.2015
  */
 class SessionValidatorWithSocial implements IRestValidator {
+
     /**
      * Validates the given data and returns a mapped version back to the caller.
      *

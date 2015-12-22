@@ -3,9 +3,10 @@ Name: rest_api_oauth
 After:
   - 'framework/*'
   - 'cms/*'
+  - 'rest_api/*'
 ---
 Injector:
-  Authenticator:
-    class: TokenAuth
+  ApiMemberAuthenticator:
+    class: SocialMemberAuthenticator
   SessionValidator:
     class: SessionValidatorWithSocial
