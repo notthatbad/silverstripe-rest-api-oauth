@@ -10,7 +10,7 @@ class FacebookSocialSessionEndpointTest extends RestTest {
 
     public function testCreateSessionWithToken() {
         // create user
-        $u = new \Ntb\User();
+        $u = new Member();
         $u->write();
         $s = new \Ntb\SocialIdentity([
             'UserID' => 'foo_user',
