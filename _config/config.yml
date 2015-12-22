@@ -4,3 +4,8 @@ After:
   - 'framework/*'
   - 'cms/*'
 ---
+Injector:
+  Authenticator:
+    class: TokenAuth
+  SessionValidator:
+    class: SessionValidatorWithSocial
