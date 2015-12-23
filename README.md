@@ -7,5 +7,11 @@ OAuth module for Silverstripe REST api
 
 This module adds the ability to create a session in the rest api with the help of an OAuth token.
 
+The module supports the following providers:
+
+ * Facebook
+ * Google
+
 ## Configuration
 
+The only thing you need to do is to configure the module with your own api id and api secret.

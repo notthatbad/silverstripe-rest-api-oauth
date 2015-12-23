@@ -18,6 +18,14 @@ class GoogleApi implements ISocialApi {
      * @throws RestSystemException
      */
     public function validateToken($token, $userID) {
-        throw new RestSystemException('Google authentication has not been implemented yet. Coming soon!', 500);
+        $client = new Google_Client();
+        $client->setClientId(Config::inst()->get('GoogleApi', 'AppID'));
+        $client->setClientSecret(Config::inst()->get('GoogleApi', 'AppSecret'));
+        $client->addScope(Google_Service_PlusDomains::PLUS_ME);
+        $ticket = $client->verifyIdToken($token);
+        if ($ticket) {
+            return $ticket['sub'] === $userID;
+        }
+        return false;
     }
 }

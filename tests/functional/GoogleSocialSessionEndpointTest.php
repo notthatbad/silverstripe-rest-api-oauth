@@ -1,15 +1,12 @@
 <?php
 
-use Facebook\Exceptions\FacebookSDKException;
-use Facebook\FacebookRequest;
 use Mockery as m;
 
 /**
- * Test session endpoint with social login via Facebook.
+ * Test session endpoint with social login via Google.
  *
- * @preserveGlobalState disabled
  */
-class FacebookSocialSessionEndpointTest extends RestTest {
+class GoogleSocialSessionEndpointTest extends RestTest {
 
 
     public function setUp() {
@@ -21,10 +18,10 @@ class FacebookSocialSessionEndpointTest extends RestTest {
 
     public function testCreateSession() {
         $this->createUser();
-        $this->mockFacebook();
+        $this->mockGoogle();
         $data = [
             'Token' => 'foo_token',
-            'AuthService' => 'facebook',
+            'AuthService' => 'google',
             'UserID' => 'foo_user'
         ];
         $result = $this->makeApiRequest('test-session', ['body' => json_encode($data), 'method' => 'POST']);
@@ -34,9 +31,9 @@ class FacebookSocialSessionEndpointTest extends RestTest {
 
     public function testCreateSessionWithoutToken() {
         $this->createUser();
-        $this->mockFacebook();
+        $this->mockGoogle();
         $data = [
-            'AuthService' => 'facebook',
+            'AuthService' => 'google',
             'UserID' => 'foo_user'
         ];
         $result = $this->makeApiRequest('test-session', ['body' => json_encode($data), 'method' => 'POST', 'code' => 422]);
@@ -46,10 +43,10 @@ class FacebookSocialSessionEndpointTest extends RestTest {
 
     public function testCreateSessionWithoutUserId() {
         $this->createUser();
-        $this->mockFacebook();
+        $this->mockGoogle();
         $data = [
             'Token' => 'foo_token',
-            'AuthService' => 'facebook'
+            'AuthService' => 'google'
         ];
         $result = $this->makeApiRequest('test-session', ['body' => json_encode($data), 'method' => 'POST', 'code' => 422]);
         $this->assertTrue(array_key_exists('code', $result));
@@ -58,10 +55,10 @@ class FacebookSocialSessionEndpointTest extends RestTest {
 
     public function testCreateSessionWithWrongUser() {
         $this->createUser();
-        $this->mockFacebook();
+        $this->mockGoogle();
         $data = [
             'Token' => 'foo_token',
-            'AuthService' => 'facebook',
+            'AuthService' => 'google',
             'UserID' => 'bar_user'
         ];
         $result = $this->makeApiRequest('test-session', ['body' => json_encode($data), 'method' => 'POST', 'code' => 401]);
@@ -71,10 +68,10 @@ class FacebookSocialSessionEndpointTest extends RestTest {
 
     public function testCreateSessionWithWrongToken() {
         $this->createUser();
-        $this->mockFacebook();
+        $this->mockGoogle();
         $data = [
             'Token' => 'bar_token',
-            'AuthService' => 'facebook',
+            'AuthService' => 'google',
             'UserID' => 'foo_user'
         ];
         $result = $this->makeApiRequest('test-session', ['body' => json_encode($data), 'method' => 'POST', 'code' => 401]);
@@ -82,18 +79,15 @@ class FacebookSocialSessionEndpointTest extends RestTest {
         $this->assertTrue(array_key_exists('message', $result));
     }
 
-    private function mockFacebook() {
-        $clientMock = m::mock('overload:Facebook\FacebookClient');
-        $clientMock->shouldReceive('sendRequest')
+    private function mockGoogle() {
+        $clientMock = m::mock('overload:Google_AccessToken_Verify');
+        $clientMock->shouldReceive('verifyIdToken')
             ->once()
-            ->andReturnUsing(function(FacebookRequest $request) {
-                if($request->getAccessToken() == 'foo_token') {
-                    return new Facebook\FacebookResponse(
-                        new \Facebook\FacebookRequest(),
-                        json_encode(["id" => "foo_user", "name" => "Foo User"]),
-                        200);
+            ->andReturnUsing(function($idToken, $clientId) {
+                if($idToken == 'foo_token') {
+                    return ['sub' => 'foo_user'];
                 }
-                throw new FacebookSDKException();
+                return false;
             });
     }
 
@@ -103,7 +97,7 @@ class FacebookSocialSessionEndpointTest extends RestTest {
         $u->write();
         $s = new \Ntb\SocialIdentity([
             'UserID' => 'foo_user',
-            'AuthService' => 'facebook',
+            'AuthService' => 'google',
             'MemberID' => $u->ID
         ]);
         $s->write();

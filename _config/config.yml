@@ -13,3 +13,6 @@ Injector:
 FacebookApi:
   AppID: foo_app
   AppSecret: foo_secret
+GoogleApi:
+  AppID: foo_app
+  AppSecret: foo_secret
