@@ -8,6 +8,14 @@ use Mockery as m;
  */
 class FacebookSocialSessionEndpointTest extends RestTest {
 
+
+    public function setUp() {
+        parent::setUp();
+        Config::inst()->update('Director', 'rules', [
+            'v/1/session/$ID/$OtherID' => 'SessionController',
+        ]);
+    }
+
     public function testCreateSessionWithToken() {
         // create user
         $u = new Member();
