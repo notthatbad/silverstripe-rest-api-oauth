@@ -5,7 +5,7 @@
  * @date 12.18.2015
  */
 class FacebookApi extends Object implements ISocialApi {
-    
+
     /**
      * Checks with the site to confirm that the given token is indeed valid
      * and corresponds with the userID we were given. It can do anything else

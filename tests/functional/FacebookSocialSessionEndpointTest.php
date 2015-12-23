@@ -12,7 +12,7 @@ class FacebookSocialSessionEndpointTest extends RestTest {
     public function setUp() {
         parent::setUp();
         Config::inst()->update('Director', 'rules', [
-            'v/1/session/$ID/$OtherID' => 'SessionController',
+            'v/1/test-session/$ID/$OtherID' => 'SessionController',
         ]);
     }
 
@@ -39,7 +39,7 @@ class FacebookSocialSessionEndpointTest extends RestTest {
                 json_encode(["id" => "foo_user", "name" => "Foo User"]),
                 200));
         $dataString = json_encode($data);
-        $result = $this->makeApiRequest('sessions', ['body' => $dataString, 'method' => 'POST']);
+        $result = $this->makeApiRequest('test-session', ['body' => $dataString, 'method' => 'POST']);
         $this->assertTrue(array_key_exists('session', $result));
         $this->assertTrue(array_key_exists('token', $result['session']));
     }
