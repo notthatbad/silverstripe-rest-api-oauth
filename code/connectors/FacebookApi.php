@@ -5,12 +5,7 @@
  * @date 12.18.2015
  */
 class FacebookApi extends Object implements ISocialApi {
-    /** @var string */
-    private static $app_id = 'foo_id';
-
-    /** @var string */
-    private static $app_secret = 'foo_secret';
-
+    
     /**
      * Checks with the site to confirm that the given token is indeed valid
      * and corresponds with the userID we were given. It can do anything else
@@ -22,8 +17,8 @@ class FacebookApi extends Object implements ISocialApi {
      */
     public function validateToken($token, $userID) {
         $fb = new Facebook\Facebook([
-            'app_id' => self::$app_id,
-            'app_secret' => self::$app_secret,
+            'app_id' => Config::inst()->get('FacebookApi', 'AppID'),
+            'app_secret' => Config::inst()->get('FacebookApi', 'AppSecret'),
             'default_graph_version' => 'v2.2',
         ]);
 

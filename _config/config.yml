@@ -10,3 +10,6 @@ Injector:
     class: SocialMemberAuthenticator
   SessionValidator:
     class: SessionValidatorWithSocial
+FacebookApi:
+  AppID: foo_app
+  AppSecret: foo_secret
