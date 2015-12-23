@@ -21,15 +21,14 @@ class FacebookApi extends Object implements ISocialApi {
             'app_secret' => Config::inst()->get('FacebookApi', 'AppSecret'),
             'default_graph_version' => 'v2.2',
         ]);
-
         try {
             // Returns a `Facebook\FacebookResponse` object
             $response = $fb->get('/me?fields=id,name', $token);
         } catch(Facebook\Exceptions\FacebookResponseException $e) {
-            SS_Log::log("Graph returned an error: " . $e->getMessage(), SS_Log::ERR);
+            SS_Log::log("Graph returned an error: " . $e->getMessage(), SS_Log::INFO);
             return false;
         } catch(Facebook\Exceptions\FacebookSDKException $e) {
-            SS_Log::log('Facebook SDK returned an error: ' . $e->getMessage(), SS_Log::ERR);
+            SS_Log::log('Facebook SDK returned an error: ' . $e->getMessage(), SS_Log::WARN);
             return false;
         }
         $user = $response->getGraphUser();
