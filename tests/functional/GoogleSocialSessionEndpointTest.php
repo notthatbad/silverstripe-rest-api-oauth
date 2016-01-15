@@ -80,15 +80,9 @@ class GoogleSocialSessionEndpointTest extends RestTest {
     }
 
     private function mockGoogle() {
-        $clientMock = m::mock('overload:Google_AccessToken_Verify');
-        $clientMock->shouldReceive('verifyIdToken')
-            ->once()
-            ->andReturnUsing(function($idToken, $clientId) {
-                if($idToken == 'foo_token') {
-                    return ['sub' => 'foo_user'];
-                }
-                return false;
-            });
+        $clientMock = m::mock('overload:Google_Client');
+        $clientMock->shouldReceive('setAccessToken')
+            ->once();
     }
 
     private function createUser() {

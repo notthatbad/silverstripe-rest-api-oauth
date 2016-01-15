@@ -22,9 +22,13 @@ class GoogleApi implements ISocialApi {
         $client->setClientId(Config::inst()->get('GoogleApi', 'AppID'));
         $client->setClientSecret(Config::inst()->get('GoogleApi', 'AppSecret'));
         $client->addScope(Google_Service_PlusDomains::PLUS_ME);
-        $ticket = $client->verifyIdToken($token);
-        if ($ticket) {
-            return $ticket['sub'] === $userID;
+        $client->setAccessToken($token);
+        $service = new Google_Service_Plus($client);
+        // The library expects some things like expires_in along with the token, that we don't have
+        // access to here. I don't love silencing errors like this but I don't see any other way.
+        $result = @$service->people->get('me');
+        if ($result) {
+            return $result['id'] === $userID;
         }
         return false;
     }
