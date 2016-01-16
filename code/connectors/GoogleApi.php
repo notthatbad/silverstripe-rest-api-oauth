@@ -29,7 +29,7 @@ class GoogleApi implements ISocialApi {
         $client->setAccessToken($token);
         $service = new Google_Service_Plus($client);
         try {
-            $result = @$service->people->get('me');
+            $result = $service->people->get('me');
             restore_error_handler();
             if ($result) {
                 return $result['id'] === $userID;
