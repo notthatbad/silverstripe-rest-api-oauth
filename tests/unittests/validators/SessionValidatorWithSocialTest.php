@@ -6,7 +6,7 @@
 class SessionValidatorWithSocialTest extends SapphireTest {
 
     public function testValidateWithEmailPassword() {
-        $data = SessionValidatorWithSocial::validate(['email' => 'mail@example.com', 'password' => 'pass']);
+        $data = SessionValidatorWithSocial::validate(['Email' => 'mail@example.com', 'Password' => 'pass']);
         $this->assertTrue(array_key_exists('Email', $data));
         $this->assertTrue(array_key_exists('Password', $data));
         $this->assertEquals('pass', $data['Password']);

@@ -15,19 +15,23 @@ class SessionValidatorWithSocial implements IRestValidator {
      * @throws ValidationException
      */
     public static function validate($data) {
+        $tokenName = Config::inst()->get('SessionValidatorWithSocial', 'token_name');
+        $emailName = Config::inst()->get('SessionValidatorWithSocial', 'email_name');
+        $authServiceName = Config::inst()->get('SessionValidatorWithSocial', 'auth_service_name');
+        $userIDName = Config::inst()->get('SessionValidatorWithSocial', 'user_id_name');
+        $passwordName = Config::inst()->get('SessionValidatorWithSocial', 'password_name');
         // allow either email or Email
-        if (isset($data['email'])) $data['Email'] = $data['email'];
-        if (isset($data['password'])) $data['Password'] = $data['password'];
-        if (!empty($data['Token'])) {
+        var_dump($data);
+        if (array_key_exists($tokenName, $data)) {
             return [
-                'Token'       => RestValidatorHelper::validate_string($data, 'Token'),
-                'AuthService' => RestValidatorHelper::validate_string($data, 'AuthService'),
-                'UserID'      => RestValidatorHelper::validate_string($data, 'UserID'),
+                'Token'       => RestValidatorHelper::validate_string($data, $tokenName),
+                'AuthService' => RestValidatorHelper::validate_string($data, $authServiceName),
+                'UserID'      => RestValidatorHelper::validate_string($data, $userIDName),
             ];
         } else {
             return [
-                'Email'    => RestValidatorHelper::validate_email($data, 'Email'),
-                'Password' => RestValidatorHelper::validate_string($data, 'Password', ['min' => 3]),
+                'Email'    => RestValidatorHelper::validate_email($data, $emailName),
+                'Password' => RestValidatorHelper::validate_string($data, $passwordName, ['min' => 3]),
             ];
         }
     }
