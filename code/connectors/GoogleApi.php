@@ -16,16 +16,31 @@ class GoogleApi implements ISocialApi {
      * @param string $userID
      * @return bool
      * @throws RestSystemException
+     * @throws RestUserException
      */
     public function validateToken($token, $userID) {
+        set_error_handler(
+            create_function('$severity, $message', 'throw new ErrorException($message);')
+        );
         $client = new Google_Client();
         $client->setClientId(Config::inst()->get('GoogleApi', 'AppID'));
         $client->setClientSecret(Config::inst()->get('GoogleApi', 'AppSecret'));
         $client->addScope(Google_Service_PlusDomains::PLUS_ME);
-        $ticket = $client->verifyIdToken($token);
-        if ($ticket) {
-            return $ticket['sub'] === $userID;
+        $client->setAccessToken($token);
+        $service = new Google_Service_Plus($client);
+        try {
+            $result = $service->people->get('me');
+            restore_error_handler();
+            if ($result) {
+                return $result['id'] === $userID;
+            }
+            return false;
+        } catch (Google_Service_Exception $e) {
+            restore_error_handler();
+            throw new RestUserException($e->getMessage(), $e->getCode(), 401);
+        } catch(Exception $e) {
+            restore_error_handler();
+            throw new RestSystemException($e->getMessage(), $e->getCode());
         }
-        return false;
     }
 }

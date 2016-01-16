@@ -1,6 +1,8 @@
 <?php
 
 use Mockery as m;
+use Monolog\Logger;
+use Psr\Http\Message\RequestInterface;
 
 /**
  * Test session endpoint with social login via Google.
@@ -14,6 +16,10 @@ class GoogleSocialSessionEndpointTest extends RestTest {
         Config::inst()->update('Director', 'rules', [
             'v/1/test-session/$ID/$OtherID' => 'SessionController',
         ]);
+    }
+
+    public function tearDown() {
+        Mockery::close();
     }
 
     public function testCreateSession() {
@@ -68,7 +74,7 @@ class GoogleSocialSessionEndpointTest extends RestTest {
 
     public function testCreateSessionWithWrongToken() {
         $this->createUser();
-        $this->mockGoogle();
+        $this->mockGoogle('bar_token');
         $data = [
             'Token' => 'bar_token',
             'AuthService' => 'google',
@@ -79,15 +85,21 @@ class GoogleSocialSessionEndpointTest extends RestTest {
         $this->assertTrue(array_key_exists('message', $result));
     }
 
-    private function mockGoogle() {
-        $clientMock = m::mock('overload:Google_AccessToken_Verify');
-        $clientMock->shouldReceive('verifyIdToken')
+    private function mockGoogle($token='foo_token') {
+        $clientMock = m::mock('overload:Google_Client');
+        $clientMock->shouldReceive('setClientId')->once();
+        $clientMock->shouldReceive('setClientSecret')->once();
+        $clientMock->shouldReceive('addScope')->once();
+        $clientMock->shouldReceive('setAccessToken')->once();
+        $clientMock->shouldReceive('shouldDefer')->once()->andReturn(false);
+        $clientMock->shouldReceive('getLogger')->once()->andReturn(new Logger('google-api-php-client'));
+        $clientMock->shouldReceive('execute')
             ->once()
-            ->andReturnUsing(function($idToken, $clientId) {
-                if($idToken == 'foo_token') {
-                    return ['sub' => 'foo_user'];
+            ->andReturnUsing(function(RequestInterface $request) use ($token) {
+                if($token != 'foo_token') {
+                    throw new Google_Service_Exception("Invalid Credentials");
                 }
-                return false;
+                return ["id" => "foo_user", "name" => "Foo User"];
             });
     }
 
