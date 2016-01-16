@@ -17,7 +17,7 @@ class GoogleSocialSessionEndpointTest extends RestTest {
             'v/1/test-session/$ID/$OtherID' => 'SessionController',
         ]);
     }
-    
+
     public function tearDown() {
         Mockery::close();
     }
