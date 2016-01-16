@@ -28,6 +28,7 @@ class GoogleApi implements ISocialApi {
         // access to here. I don't love silencing errors like this but I don't see any other way.
         $result = @$service->people->get('me');
         if ($result) {
+            var_dump($result);
             return $result['id'] === $userID;
         }
         return false;
