@@ -26,7 +26,8 @@ class GoogleApi implements ISocialApi {
         $client->setClientId(Config::inst()->get('GoogleApi', 'AppID'));
         $client->setClientSecret(Config::inst()->get('GoogleApi', 'AppSecret'));
         $client->addScope(Google_Service_PlusDomains::PLUS_ME);
-        $client->setAccessToken($token);
+        $ticket = $client->verifyIdToken($token);
+        $client->setAccessToken($ticket);
         $service = new Google_Service_Plus($client);
         try {
             $result = $service->people->get('me');
