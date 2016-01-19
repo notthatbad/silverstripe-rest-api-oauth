@@ -108,9 +108,9 @@ class GoogleSocialSessionEndpointTest extends RestTest {
         $u = new Member();
         $u->write();
         $s = new \Ntb\SocialIdentity([
-            'userID' => 'foo_user',
-            'authService' => 'google',
-            'memberID' => $u->ID
+            'UserID' => 'foo_user',
+            'AuthService' => 'google',
+            'MemberID' => $u->ID
         ]);
         $s->write();
     }
