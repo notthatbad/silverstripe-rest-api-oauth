@@ -21,7 +21,6 @@ class SessionValidatorWithSocial implements IRestValidator {
         $userIDName = Config::inst()->get('SessionValidatorWithSocial', 'user_id_name');
         $passwordName = Config::inst()->get('SessionValidatorWithSocial', 'password_name');
         // allow either email or Email
-        var_dump($data);
         if (array_key_exists($tokenName, $data)) {
             return [
                 'Token'       => RestValidatorHelper::validate_string($data, $tokenName),
