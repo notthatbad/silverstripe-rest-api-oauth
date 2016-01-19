@@ -43,4 +43,13 @@ class GoogleApi implements ISocialApi {
             throw new RestSystemException($e->getMessage(), $e->getCode());
         }
     }
+
+    /**
+     * @param string $token
+     * @return array
+     */
+    public function getProfileData($token)
+    {
+        // TODO: Implement getProfileData() method.
+    }
 }
