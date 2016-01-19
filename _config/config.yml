@@ -17,8 +17,8 @@ GoogleApi:
   AppID: foo_app
   AppSecret: foo_secret
 SessionValidatorWithSocial:
-  token_name: Token
-  auth_service_name: AuthService
-  email_name: Email
-  user_id_name: UserID
-  password_name: Password
+  token_name: token
+  auth_service_name: authService
+  email_name: email
+  user_id_name: userID
+  password_name: password

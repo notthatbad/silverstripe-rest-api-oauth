@@ -20,11 +20,23 @@ class SocialMemberAuthenticator extends MemberAuthenticator {
      * @return bool
      */
     public static function validate_token($token, $service, $userID) {
-        $serviceMap = self::config()->social_services ?: [];
-        if (empty($service) || empty($serviceMap[$service])) return false;
-        /** @var ISocialApi $serviceApi */
-        $serviceApi = Injector::inst()->get($serviceMap[$service]);
+        $serviceApi = self::get_service_api($service);
+        if(!$serviceApi) {
+            return false;
+        }
         return $serviceApi->validateToken($token, $userID);
+    }
+
+    /**
+     * @param string $service
+     * @return bool|ISocialApi
+     */
+    public static function get_service_api($service) {
+        $serviceMap = self::config()->social_services ?: [];
+        if (empty($service) || empty($serviceMap[$service])) {
+            return false;
+        }
+        return Injector::inst()->get($serviceMap[$service]);
     }
 
     /**
