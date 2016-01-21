@@ -7,6 +7,7 @@ use Psr\Http\Message\RequestInterface;
 /**
  * Test session endpoint with social login via Google.
  *
+ * @author Christian Blank <c.blank@notthatbad.net>
  */
 class GoogleSocialSessionEndpointTest extends RestTest {
 
@@ -26,9 +27,9 @@ class GoogleSocialSessionEndpointTest extends RestTest {
         $this->createUser();
         $this->mockGoogle();
         $data = [
-            'Token' => 'foo_token',
-            'AuthService' => 'google',
-            'UserID' => 'foo_user'
+            'token' => 'foo_token',
+            'authService' => 'google',
+            'userID' => 'foo_user'
         ];
         $result = $this->makeApiRequest('test-session', ['body' => json_encode($data), 'method' => 'POST']);
         $this->assertTrue(array_key_exists('session', $result));
@@ -39,8 +40,8 @@ class GoogleSocialSessionEndpointTest extends RestTest {
         $this->createUser();
         $this->mockGoogle();
         $data = [
-            'AuthService' => 'google',
-            'UserID' => 'foo_user'
+            'authService' => 'google',
+            'userID' => 'foo_user'
         ];
         $result = $this->makeApiRequest('test-session', ['body' => json_encode($data), 'method' => 'POST', 'code' => 422]);
         $this->assertTrue(array_key_exists('code', $result));
@@ -51,8 +52,8 @@ class GoogleSocialSessionEndpointTest extends RestTest {
         $this->createUser();
         $this->mockGoogle();
         $data = [
-            'Token' => 'foo_token',
-            'AuthService' => 'google'
+            'token' => 'foo_token',
+            'authService' => 'google'
         ];
         $result = $this->makeApiRequest('test-session', ['body' => json_encode($data), 'method' => 'POST', 'code' => 422]);
         $this->assertTrue(array_key_exists('code', $result));
@@ -63,9 +64,9 @@ class GoogleSocialSessionEndpointTest extends RestTest {
         $this->createUser();
         $this->mockGoogle();
         $data = [
-            'Token' => 'foo_token',
-            'AuthService' => 'google',
-            'UserID' => 'bar_user'
+            'token' => 'foo_token',
+            'authService' => 'google',
+            'userID' => 'bar_user'
         ];
         $result = $this->makeApiRequest('test-session', ['body' => json_encode($data), 'method' => 'POST', 'code' => 401]);
         $this->assertTrue(array_key_exists('code', $result));
@@ -76,9 +77,9 @@ class GoogleSocialSessionEndpointTest extends RestTest {
         $this->createUser();
         $this->mockGoogle('bar_token');
         $data = [
-            'Token' => 'bar_token',
-            'AuthService' => 'google',
-            'UserID' => 'foo_user'
+            'token' => 'bar_token',
+            'authService' => 'google',
+            'userID' => 'foo_user'
         ];
         $result = $this->makeApiRequest('test-session', ['body' => json_encode($data), 'method' => 'POST', 'code' => 401]);
         $this->assertTrue(array_key_exists('code', $result));

@@ -8,6 +8,7 @@ use Mockery as m;
  * Test session endpoint with social login via Facebook.
  *
  * @preserveGlobalState disabled
+ * @author Christian Blank <c.blank@notthatbad.net>
  */
 class FacebookSocialSessionEndpointTest extends RestTest {
 
