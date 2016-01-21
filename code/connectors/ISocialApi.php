@@ -9,6 +9,7 @@
  *
  * @author Mark Guinn <mark@adaircreative.com>
  * @date 12.18.2015
+ * @author Christian Blank <c.blank@notthatbad.net>
  */
 interface ISocialApi {
     /**

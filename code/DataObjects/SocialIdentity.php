@@ -5,6 +5,7 @@ namespace Ntb;
 /**
  * Class SocialIdentity
  * @package Ntb
+ * @author Christian Blank <c.blank@notthatbad.net>
  */
 class SocialIdentity extends \DataObject {
     private static $db = [

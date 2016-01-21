@@ -7,6 +7,7 @@ use Psr\Http\Message\RequestInterface;
 /**
  * Test session endpoint with social login via Google.
  *
+ * @author Christian Blank <c.blank@notthatbad.net>
  */
 class GoogleSocialSessionEndpointTest extends RestTest {
 

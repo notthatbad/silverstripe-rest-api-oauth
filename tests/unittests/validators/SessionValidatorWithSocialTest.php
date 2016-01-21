@@ -2,6 +2,7 @@
 
 /**
  * Test mechanisms in social member authenticator
+ * @author Christian Blank <c.blank@notthatbad.net>
  */
 class SessionValidatorWithSocialTest extends SapphireTest {
 
