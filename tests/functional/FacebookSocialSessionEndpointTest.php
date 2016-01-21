@@ -23,9 +23,9 @@ class FacebookSocialSessionEndpointTest extends RestTest {
         $this->createUser();
         $this->mockFacebook();
         $data = [
-            'Token' => 'foo_token',
-            'AuthService' => 'facebook',
-            'UserID' => 'foo_user'
+            'token' => 'foo_token',
+            'authService' => 'facebook',
+            'userID' => 'foo_user'
         ];
         $result = $this->makeApiRequest('test-session', ['body' => json_encode($data), 'method' => 'POST']);
         $this->assertTrue(array_key_exists('session', $result));
@@ -36,8 +36,8 @@ class FacebookSocialSessionEndpointTest extends RestTest {
         $this->createUser();
         $this->mockFacebook();
         $data = [
-            'AuthService' => 'facebook',
-            'UserID' => 'foo_user'
+            'authService' => 'facebook',
+            'userID' => 'foo_user'
         ];
         $result = $this->makeApiRequest('test-session', ['body' => json_encode($data), 'method' => 'POST', 'code' => 422]);
         $this->assertTrue(array_key_exists('code', $result));
@@ -48,8 +48,8 @@ class FacebookSocialSessionEndpointTest extends RestTest {
         $this->createUser();
         $this->mockFacebook();
         $data = [
-            'Token' => 'foo_token',
-            'AuthService' => 'facebook'
+            'token' => 'foo_token',
+            'authService' => 'facebook'
         ];
         $result = $this->makeApiRequest('test-session', ['body' => json_encode($data), 'method' => 'POST', 'code' => 422]);
         $this->assertTrue(array_key_exists('code', $result));
@@ -60,9 +60,9 @@ class FacebookSocialSessionEndpointTest extends RestTest {
         $this->createUser();
         $this->mockFacebook();
         $data = [
-            'Token' => 'foo_token',
-            'AuthService' => 'facebook',
-            'UserID' => 'bar_user'
+            'token' => 'foo_token',
+            'authService' => 'facebook',
+            'userID' => 'bar_user'
         ];
         $result = $this->makeApiRequest('test-session', ['body' => json_encode($data), 'method' => 'POST', 'code' => 401]);
         $this->assertTrue(array_key_exists('code', $result));
@@ -73,9 +73,9 @@ class FacebookSocialSessionEndpointTest extends RestTest {
         $this->createUser();
         $this->mockFacebook();
         $data = [
-            'Token' => 'bar_token',
-            'AuthService' => 'facebook',
-            'UserID' => 'foo_user'
+            'token' => 'bar_token',
+            'authService' => 'facebook',
+            'userID' => 'foo_user'
         ];
         $result = $this->makeApiRequest('test-session', ['body' => json_encode($data), 'method' => 'POST', 'code' => 401]);
         $this->assertTrue(array_key_exists('code', $result));

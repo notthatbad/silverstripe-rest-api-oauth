@@ -21,4 +21,10 @@ interface ISocialApi {
      * @return boolean
      */
     public function validateToken($token, $userID);
+
+    /**
+     * @param string $token
+     * @return array
+     */
+    public function getProfileData($token);
 }
