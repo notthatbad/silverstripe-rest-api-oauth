@@ -18,6 +18,9 @@ class FacebookSocialSessionEndpointTest extends RestTest {
         Config::inst()->update('Director', 'rules', [
             'v/1/test-session/$ID/$OtherID' => 'SessionController',
         ]);
+        Config::inst()->update('SessionValidatorWithSocial', 'token_name', 'token');
+        Config::inst()->update('SessionValidatorWithSocial', 'auth_service_name', 'authService');
+        Config::inst()->update('SessionValidatorWithSocial', 'user_id_name', 'userID');
     }
 
     public function testCreateSession() {
