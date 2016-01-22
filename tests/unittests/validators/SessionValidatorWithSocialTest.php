@@ -2,8 +2,18 @@
 
 /**
  * Test mechanisms in social member authenticator
+ * @author Christian Blank <c.blank@notthatbad.net>
  */
 class SessionValidatorWithSocialTest extends SapphireTest {
+
+    public function setUp() {
+        parent::setUp();
+        Config::inst()->update('SessionValidatorWithSocial', 'token_name', 'token');
+        Config::inst()->update('SessionValidatorWithSocial', 'auth_service_name', 'authService');
+        Config::inst()->update('SessionValidatorWithSocial', 'email_name', 'email');
+        Config::inst()->update('SessionValidatorWithSocial', 'user_id_name', 'userID');
+        Config::inst()->update('SessionValidatorWithSocial', 'password_name', 'password');
+    }
 
     public function testValidateWithEmailPassword() {
         $data = SessionValidatorWithSocial::validate(['email' => 'mail@example.com', 'password' => 'pass']);

@@ -6,12 +6,20 @@ use Ntb\SocialIdentity;
  *
  * @author Mark Guinn <mark@adaircreative.com>
  * @date 12.18.2015
+ * @author Christian Blank <c.blank@notthatbad.net>
  */
 class SocialMemberAuthenticator extends MemberAuthenticator {
     private static $social_services = [
         'facebook' => 'FacebookApi',
         'google'   => 'GoogleApi',
     ];
+
+    /**
+     * @var bool - if this is false, the account must be registered with a social identity to use it for authentication
+     *             if this is true, the social account can authenticate the user as long as the email matches and a new
+     *             SocialIdentity will be attached to the member.
+     */
+    private static $allow_login_to_connect = true;
 
     /**
      * @param string $token the oauth token for the specified service
@@ -25,6 +33,19 @@ class SocialMemberAuthenticator extends MemberAuthenticator {
             return false;
         }
         return $serviceApi->validateToken($token, $userID);
+    }
+
+    /**
+     * @param string $token the oauth token for the specified service
+     * @param string $service the name of the service (eg. `facebook` or `google`)
+     * @return array
+     */
+    public static function get_profile($token, $service) {
+        $serviceApi = self::get_service_api($service);
+        if(!$serviceApi) {
+            return null;
+        }
+        return $serviceApi->getProfileData($token);
     }
 
     /**
@@ -60,11 +81,25 @@ class SocialMemberAuthenticator extends MemberAuthenticator {
                     'AuthService' => $data['AuthService'],
                     'UserID' => $data['UserID']
                 ])->first();
+
                 if ($identity) {
                     $member = $identity->Member();
                     $success = true;
                     return $member;
+                } elseif (self::config()->allow_login_to_connect) {
+                    $profile = self::get_profile($data['Token'], $data['AuthService']);
+                    $member = Member::get()->filter('Email', $profile['Email'])->first();
+                    if ($member && !empty($profile['Email'])) {
+                        $identity = new SocialIdentity();
+                        $identity->MemberID = $member->ID;
+                        $identity->AuthService = $data['AuthService'];
+                        $identity->UserID = $data['UserID'];
+                        $identity->write();
+                        $success = true;
+                        return $member;
+                    }
                 }
+
                 throw new RestUserException("User not found", 401, 401);
             } else {
                 throw new RestUserException("Invalid access token", 401, 401);
