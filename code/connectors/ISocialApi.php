@@ -19,7 +19,7 @@ interface ISocialApi {
      *
      * @param string $token
      * @param string $userID
-     * @return boolean
+     * @return false
      */
     public function validateToken($token, $userID);
 
