@@ -68,7 +68,7 @@ class FacebookApi extends Object implements ISocialApi {
             'Surname' => $user->getLastName(),
             'Email' => $user->getEmail(),
             'Alias' => $user->getFirstName(),
-            'BirthYear' => $user->getBirthday()->format("Y"),
+            'BirthYear' => $user->getBirthday() ? $user->getBirthday()->format("Y") : null,
             'Description' => $user->getField('about'),
             'Gender' => $user->getGender(),
             'ProfileImage' => $imageData->getField('url', null)
