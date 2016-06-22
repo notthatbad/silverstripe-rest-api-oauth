@@ -2,7 +2,7 @@
   "name": "ntb/silverstripe-rest-api-oauth",
   "description": "OAuth module for Silverstripe REST api",
   "type": "silverstripe-module",
-  "homepage": "https://github.com/1blankz7/silverstripe-rest-api-oauth",
+  "homepage": "https://github.com/notthatbad/silverstripe-rest-api-oauth",
   "keywords": [
     "silverstripe",
     "rest",
