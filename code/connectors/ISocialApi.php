@@ -1,5 +1,7 @@
 <?php
 
+namespace Ntb\RestAPI\OAuth;
+
 /**
  * I'm choosing not to use OAuth or any of the other social API abstractions out there because
  * 1) they are all very complicated and 2) the ones that worked didn't have all the services we

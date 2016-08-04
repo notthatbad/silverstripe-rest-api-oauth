@@ -1,7 +1,15 @@
 <?php
 
+namespace Ntb\RestAPI\OAuth;
+
+use Config;
+use Google_Service_Exception;
+use Member;
 use Mockery as m;
+use Mockery;
 use Monolog\Logger;
+use Ntb\RestAPI\RestTest;
+use Ntb\SocialIdentity;
 use Psr\Http\Message\RequestInterface;
 
 /**
@@ -11,11 +19,10 @@ use Psr\Http\Message\RequestInterface;
  */
 class GoogleSocialSessionEndpointTest extends RestTest {
 
-
     public function setUp() {
         parent::setUp();
         Config::inst()->update('Director', 'rules', [
-            'v/1/test-session/$ID/$OtherID' => 'SessionController',
+            'v/1/test-session/$ID/$OtherID' => 'Ntb\RestAPI\SessionController',
         ]);
         Config::inst()->update('SessionValidatorWithSocial', 'token_name', 'token');
         Config::inst()->update('SessionValidatorWithSocial', 'auth_service_name', 'authService');
@@ -111,7 +118,7 @@ class GoogleSocialSessionEndpointTest extends RestTest {
         // create user
         $u = new Member();
         $u->write();
-        $s = new \Ntb\SocialIdentity([
+        $s = new SocialIdentity([
             'UserID' => 'foo_user',
             'AuthService' => 'google',
             'MemberID' => $u->ID

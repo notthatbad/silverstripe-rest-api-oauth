@@ -1,5 +1,11 @@
 <?php
 
+namespace Ntb\RestAPI\OAuth;
+
+use Config;
+use Ntb\RestAPI\TestHelper;
+use SapphireTest;
+
 /**
  * Test mechanisms in social member authenticator
  * @author Christian Blank <c.blank@notthatbad.net>

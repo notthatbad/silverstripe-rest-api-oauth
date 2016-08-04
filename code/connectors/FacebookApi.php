@@ -1,5 +1,14 @@
 <?php
 
+namespace Ntb\RestAPI\OAuth;
+
+use Config;
+use Facebook\Exceptions\FacebookResponseException;
+use Facebook\Exceptions\FacebookSDKException;
+use Facebook\Facebook;
+use Object;
+use SS_Log;
+
 /**
  * @author Mark Guinn <mark@adaircreative.com>
  * @date 12.18.2015
@@ -17,7 +26,7 @@ class FacebookApi extends Object implements ISocialApi {
      * @return boolean
      */
     public function validateToken($token, $userID) {
-        $fb = new Facebook\Facebook([
+        $fb = new Facebook([
             'app_id' => Config::inst()->get('FacebookApi', 'AppID'),
             'app_secret' => Config::inst()->get('FacebookApi', 'AppSecret'),
             'default_graph_version' => 'v2.2',
@@ -25,10 +34,10 @@ class FacebookApi extends Object implements ISocialApi {
         try {
             // Returns a `Facebook\FacebookResponse` object
             $response = $fb->get('/me?fields=id,name', $token);
-        } catch(Facebook\Exceptions\FacebookResponseException $e) {
+        } catch(FacebookResponseException $e) {
             SS_Log::log("Graph returned an error: " . $e->getMessage(), SS_Log::INFO);
             return false;
-        } catch(Facebook\Exceptions\FacebookSDKException $e) {
+        } catch(FacebookSDKException $e) {
             SS_Log::log('Facebook SDK returned an error: ' . $e->getMessage(), SS_Log::WARN);
             return false;
         }
@@ -41,7 +50,7 @@ class FacebookApi extends Object implements ISocialApi {
      * @return array
      */
     public function getProfileData($token) {
-        $fb = new Facebook\Facebook([
+        $fb = new Facebook([
             'app_id' => Config::inst()->get('FacebookApi', 'AppID'),
             'app_secret' => Config::inst()->get('FacebookApi', 'AppSecret'),
             'default_graph_version' => 'v2.2',
@@ -54,10 +63,10 @@ class FacebookApi extends Object implements ISocialApi {
             ];
             $profileResponse = $fb->get('/me?fields='.implode(',', $fieldList), $token);
             $imageResponse = $fb->get('/me/picture?width=1000&redirect=false', $token);
-        } catch(Facebook\Exceptions\FacebookResponseException $e) {
+        } catch(FacebookResponseException $e) {
             SS_Log::log("Graph returned an error: " . $e->getMessage(), SS_Log::INFO);
             return false;
-        } catch(Facebook\Exceptions\FacebookSDKException $e) {
+        } catch(FacebookSDKException $e) {
             SS_Log::log('Facebook SDK returned an error: ' . $e->getMessage(), SS_Log::WARN);
             return false;
         }

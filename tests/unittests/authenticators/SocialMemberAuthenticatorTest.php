@@ -1,5 +1,14 @@
 <?php
 
+namespace Ntb\RestAPI\OAuth;
+
+use Config;
+use Injector;
+use Member;
+use Ntb\SocialIdentity;
+use PHPUnit_Framework_MockObject_MockObject;
+use SapphireTest;
+
 /**
  * Test mechanisms in social member authenticator
  * @author Christian Blank <c.blank@notthatbad.net>

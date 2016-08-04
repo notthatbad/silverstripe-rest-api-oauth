@@ -1,4 +1,12 @@
 <?php
+
+namespace Ntb\RestAPI\OAuth;
+
+use Form;
+use Injector;
+use Member;
+use MemberAuthenticator;
+use Ntb\RestAPI\RestUserException;
 use Ntb\SocialIdentity;
 
 /**
