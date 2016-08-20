@@ -1,5 +1,17 @@
 <?php
 
+namespace Ntb\RestAPI\OAuth;
+
+use Config;
+use Debug;
+use Exception;
+use Google_Client;
+use Google_Service_Exception;
+use Google_Service_Plus;
+use Google_Service_PlusDomains;
+use Ntb\RestAPI\RestSystemException;
+use Ntb\RestAPI\RestUserException;
+
 /**
  *
  *

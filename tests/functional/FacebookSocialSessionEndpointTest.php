@@ -1,8 +1,15 @@
 <?php
 
+namespace Ntb\RestAPI\OAuth;
+
+use Config;
 use Facebook\Exceptions\FacebookSDKException;
 use Facebook\FacebookRequest;
+use Facebook\FacebookResponse;
+use Member;
 use Mockery as m;
+use Ntb\RestAPI\RestTest;
+use Ntb\SocialIdentity;
 
 /**
  * Test session endpoint with social login via Facebook.
@@ -16,7 +23,7 @@ class FacebookSocialSessionEndpointTest extends RestTest {
     public function setUp() {
         parent::setUp();
         Config::inst()->update('Director', 'rules', [
-            'v/1/test-session/$ID/$OtherID' => 'SessionController',
+            'v/1/test-session/$ID/$OtherID' => 'Ntb\RestAPI\SessionController',
         ]);
         Config::inst()->update('SessionValidatorWithSocial', 'token_name', 'token');
         Config::inst()->update('SessionValidatorWithSocial', 'auth_service_name', 'authService');
@@ -87,13 +94,13 @@ class FacebookSocialSessionEndpointTest extends RestTest {
     }
 
     private function mockFacebook() {
-        $clientMock = m::mock('overload:Facebook\FacebookClient');
+        $clientMock = m::mock('overload:\Facebook\FacebookClient');
         $clientMock->shouldReceive('sendRequest')
             ->once()
             ->andReturnUsing(function(FacebookRequest $request) {
                 if($request->getAccessToken() == 'foo_token') {
-                    return new Facebook\FacebookResponse(
-                        new \Facebook\FacebookRequest(),
+                    return new FacebookResponse(
+                        new FacebookRequest(),
                         json_encode(["id" => "foo_user", "name" => "Foo User"]),
                         200);
                 }
@@ -105,7 +112,7 @@ class FacebookSocialSessionEndpointTest extends RestTest {
         // create user
         $u = new Member();
         $u->write();
-        $s = new \Ntb\SocialIdentity([
+        $s = new SocialIdentity([
             'UserID' => 'foo_user',
             'AuthService' => 'facebook',
             'MemberID' => $u->ID

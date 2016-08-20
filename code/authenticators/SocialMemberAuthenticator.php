@@ -1,4 +1,12 @@
 <?php
+
+namespace Ntb\RestAPI\OAuth;
+
+use Form;
+use Injector;
+use Member;
+use MemberAuthenticator;
+use Ntb\RestAPI\RestUserException;
 use Ntb\SocialIdentity;
 
 /**
@@ -10,8 +18,8 @@ use Ntb\SocialIdentity;
  */
 class SocialMemberAuthenticator extends MemberAuthenticator {
     private static $social_services = [
-        'facebook' => 'FacebookApi',
-        'google'   => 'GoogleApi',
+        'facebook' => 'Ntb\RestAPI\OAuth\FacebookApi',
+        'google'   => 'Ntb\RestAPI\OAuth\GoogleApi',
     ];
 
     /**

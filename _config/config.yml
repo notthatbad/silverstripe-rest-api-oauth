@@ -7,9 +7,9 @@ After:
 ---
 Injector:
   ApiMemberAuthenticator:
-    class: SocialMemberAuthenticator
+    class: Ntb\RestAPI\OAuth\SocialMemberAuthenticator
   SessionValidator:
-    class: SessionValidatorWithSocial
+    class: Ntb\RestAPI\OAuth\SessionValidatorWithSocial
 FacebookApi:
   AppID: foo_app
   AppSecret: foo_secret

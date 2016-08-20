@@ -1,4 +1,12 @@
 <?php
+
+namespace Ntb\RestAPI\OAuth;
+
+use Config;
+use Ntb\RestAPI\IRestValidator;
+use Ntb\RestAPI\RestValidatorHelper;
+use ValidationException;
+
 /**
  * Replaces the default REST api validator to allow social tokens or email/password
  *
