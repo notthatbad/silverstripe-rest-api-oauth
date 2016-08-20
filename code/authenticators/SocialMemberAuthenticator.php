@@ -18,8 +18,8 @@ use Ntb\SocialIdentity;
  */
 class SocialMemberAuthenticator extends MemberAuthenticator {
     private static $social_services = [
-        'facebook' => 'FacebookApi',
-        'google'   => 'GoogleApi',
+        'facebook' => 'Ntb\RestAPI\OAuth\FacebookApi',
+        'google'   => 'Ntb\RestAPI\OAuth\GoogleApi',
     ];
 
     /**

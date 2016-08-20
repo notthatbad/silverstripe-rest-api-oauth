@@ -32,8 +32,8 @@ class SocialMemberAuthenticatorTest extends SapphireTest {
     public function setUp() {
         parent::setUp();
 
-        $this->mockFacebook = $this->getMock('FacebookApi');
-        Injector::inst()->registerService($this->mockFacebook, 'FacebookApi');
+        $this->mockFacebook = $this->getMock('Ntb\RestAPI\OAuth\FacebookApi');
+        Injector::inst()->registerService($this->mockFacebook, 'Ntb\RestAPI\OAuth\FacebookApi');
 
         $this->member = $this->getFixtureFactory()->createObject(
             'Member',
@@ -96,21 +96,21 @@ class SocialMemberAuthenticatorTest extends SapphireTest {
 
     public function testInvalidToken() {
         $this->givenFacebookValidatesTheTokenAs(false);
-        $this->setExpectedException('RestUserException');
+        $this->setExpectedException('Ntb\RestAPI\RestUserException');
         $member = $this->sut->authenticate(['Token' => 'abc123', 'AuthService' => 'facebook', 'UserID' => 'fb1234']);
         $this->assertNull($member);
     }
 
     public function testInvalidService() {
         $this->givenFacebookValidatesTheTokenAs(true);
-        $this->setExpectedException('RestUserException');
+        $this->setExpectedException('Ntb\RestAPI\RestUserException');
         $member = $this->sut->authenticate(['Token' => 'abc123', 'AuthService' => 'hackertown', 'UserID' => 'fb1234']);
         $this->assertNull($member);
     }
 
     public function testInvalidUserId() {
         $this->givenFacebookValidatesTheTokenAs(true);
-        $this->setExpectedException('RestUserException');
+        $this->setExpectedException('Ntb\RestAPI\RestUserException');
         $member = $this->sut->authenticate(['Token' => 'abc123', 'AuthService' => 'facebook', 'UserID' => 'fb999']);
         $this->assertNull($member);
     }
@@ -144,7 +144,7 @@ class SocialMemberAuthenticatorTest extends SapphireTest {
         $this->identity->delete();
         $this->givenFacebookValidatesTheTokenAs(true);
         $this->givenFacebookReturnsProfileData(['Email' => 'wrong@test.com']);
-        $this->setExpectedException('RestUserException');
+        $this->setExpectedException('Ntb\RestAPI\RestUserException');
         $member = $this->sut->authenticate(['Token' => 'abc123', 'AuthService' => 'facebook', 'UserID' => 'fb1234']);
         $this->assertNull($member);
     }
@@ -153,7 +153,7 @@ class SocialMemberAuthenticatorTest extends SapphireTest {
         Config::inst()->update('SocialMemberAuthenticator', 'allow_login_to_connect', false);
         $this->identity->delete();
         $this->givenFacebookValidatesTheTokenAs(true);
-        $this->setExpectedException('RestUserException');
+        $this->setExpectedException('Ntb\RestAPI\RestUserException');
         $member = $this->sut->authenticate(['Token' => 'abc123', 'AuthService' => 'facebook', 'UserID' => 'fb1234']);
         $this->assertNull($member);
     }
